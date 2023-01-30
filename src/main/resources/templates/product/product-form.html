@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<div class="container mx-auto w-4/5">
+    <header th:replace="~{layout::header}"></header>
+    <nav th:replace="~{layout::navigation}"></nav>
+
+    <form  method="post" th:action="@{/product/save-product}" th:object="${product}">
+        <div>
+            <input hidden type="text" th:field="*{id}" placeholder="Name" autocomplete="off"/>
+        </div>
+
+        <div>
+            <input type="text" th:field="*{name}" placeholder="Name" autocomplete="off"/>
+        </div>
+
+        <div>
+            <input type="text" th:field="*{category}" placeholder="Category"/>
+        </div>
+        <div>
+            <textarea id="address" th:field="*{description}"  rows="4" cols="50"></textarea>
+        </div>
+        <div>
+            <input type="number" th:field="*{price}" placeholder="Price"/>
+        </div>
+        <div>
+            <label>Discontinue</label>
+            <input type="checkbox" th:field="*{discontinue}" th:checked="*{discontinue }? true : false" />
+        </div>
+
+
+        <div>
+            <button type="submit">Save</button>
+
+        </div>
+
+    </form>
+    <a th:href="@{/product/merchandise}">
+        <button >Cancel</button>
+    </a>
+</div>
+
+
+
+
+</body>
+</html>

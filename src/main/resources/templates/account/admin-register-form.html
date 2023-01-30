@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body>
+
+<div class="container mx-auto w-4/5">
+  <header th:replace="~{layout::header}"></header>
+  <nav th:replace="~{layout::navigation}"></nav>
+  <div  class="flex justify-between p-5 border-solid border-2 border-black">Admin</div>
+  <form  method="post" th:action="@{/admin/registerAdmin}" th:object="${admin}">
+    <div>
+      <input type="text" th:field="*{username}" placeholder="Username" autocomplete="off"/>
+    </div>
+    <div>
+      <input type="password" th:field="*{password}" placeholder="Password"/>
+    </div>
+    <div>
+      <input type="password" th:field="*{passwordConfirmation}" placeholder="Confirm Password"/>
+    </div>
+    <button type="submit">Save New Admin</button>
+</div>
+</form>
+</div>
+
+</body>
+</html>

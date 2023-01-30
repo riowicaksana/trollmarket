@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.5/dist/flowbite.min.css"/>
+    <title>Troll Market</title>
+</head>
+<body>
+
+<header class="flex justify-between p-5 border-solid border-2 border-black" th:fragment="header" >
+    <div>
+        Troll Market
+    </div>
+    <div class="flex flex-row gap-2">
+        <span>Welcome </span>
+        <span th:text="${#authentication.principal}"></span>
+        <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">
+            <form  th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout" />
+            </form>
+        </button>
+
+    </div>
+
+
+</header>
+<nav class="flex justify-between p-5 border-solid border-2 border-black" th:fragment="navigation">
+
+    <a th:href="@{/home}">
+        <button>Home</button>
+    </a>
+    <a sec:authorize="hasAnyAuthority('Buyer','Seller')" th:href="@{/profile/profile-detail}">
+        <button>Profile</button>
+    </a>
+    <a sec:authorize="hasAnyAuthority('Buyer')" th:href="@{/shop/shop-table}">
+        <button>Shop</button>
+    </a>
+
+    <a sec:authorize="hasAnyAuthority('Seller')" th:href="@{/product/merchandise}">
+        <button>Merchandise</button>
+    </a>
+    <a sec:authorize="hasAnyAuthority('Admin')" th:href="@{/shipment/shipment-table}">
+        <button>Shippment</button>
+    </a>
+
+    <a sec:authorize="hasAnyAuthority('Buyer')" th:href="@{/cart/cart-table}">
+        <button>My Cart</button>
+    </a>
+    <a sec:authorize="hasAnyAuthority('Admin')" th:href="@{/admin/register-admin}">
+        <button>Admin</button>
+    </a>
+
+    <a sec:authorize="hasAnyAuthority('Admin')" th:href="@{/history/history-table}">
+        <button>History</button>
+    </a>
+
+
+
+
+</nav>
+
+</body>
+</html>

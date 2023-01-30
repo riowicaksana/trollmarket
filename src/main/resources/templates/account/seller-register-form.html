@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Registration</title>
+</head>
+<body>
+<form  method="post" th:action="@{/account/registerSeller}" th:object="${seller}">
+    <div th:errors="${seller}"></div>
+    <div>
+        <input type="text" th:field="*{username}" placeholder="Username" autocomplete="off"/>
+        <div th:errors="*{username}"></div>
+    </div>
+    <div>
+        <input type="password" th:field="*{password}" placeholder="Password"/>
+        <div th:errors="*{password}"></div>
+    </div>
+
+    <div>
+        <input type="password" th:field="*{passwordConfirmation}" placeholder="Confirm Password"/>
+        <div th:errors="*{passwordConfirmation}"></div>
+    </div>
+    <div>
+        <input type="text" name="Name" placeholder="Name"/>
+    </div>
+    <div>
+        <textarea id="address" name="address" rows="4" cols="50"></textarea>
+    </div>
+    <div>
+        <button type="submit">Register</button>
+
+    </div>
+
+</form>
+<a th:href="@{/account/login}"><button >Back To Login Page</button></a>
+
+
+
+</body>
+</html>

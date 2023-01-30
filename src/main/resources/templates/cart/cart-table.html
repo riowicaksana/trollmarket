@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<div class="container mx-auto w-4/5">
+    <header th:replace="~{layout::header}"></header>
+    <nav th:replace="~{layout::navigation}"></nav>
+    <div class="flex justify-between p-5 border-solid border-2 border-black">Cart</div>
+    <section>
+        <a th:href="@{/cart/purchase}">
+            <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    type="button">
+                Purchase All
+            </button>
+        </a>
+        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-blue-100 dark:text-blue-100">
+                <thead class="text-xs text-white uppercase bg-blue-600 dark:text-white">
+                <tr>
+                    <th scope="col" class="py-3 px-6"></th>
+                    <th scope="col" class="py-3 px-6">Product</th>
+                    <th scope="col" class="py-3 px-6">Quantity</th>
+                    <th scope="col" class="py-3 px-6">Shipment</th>
+                    <th scope="col" class="py-3 px-6">Seller</th>
+                    <th scope="col" class="py-3 px-6">Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="bg-blue-500 border-b border-blue-400" th:each="cart :${cartList}">
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+
+                        <a th:href="@{/cart/delete-cart/{id}(id=${cart.id})}">
+                            <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    type="button">
+                                Remove
+                            </button>
+                        </a>
+                    </td>
+                    <td  class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${cart.productName}"></td>
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${cart.quantity}"></td>
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${cart.shipmentName}"></td>
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${cart.sellerName}"></td>
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${cart.totalPrice}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+</body>
+</html>

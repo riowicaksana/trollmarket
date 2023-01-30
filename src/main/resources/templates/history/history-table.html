@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<div class="container mx-auto w-4/5">
+    <header th:replace="~{layout::header}"></header>
+    <nav th:replace="~{layout::navigation}"></nav>
+    <div  class="flex justify-between p-5 border-solid border-2 border-black">History</div>
+    <section>
+        <form th:action="@{/history/history-table}" method="get">
+            <div>
+                <label>Seller: </label>
+                <div>
+                    <select id="seller" name="seller">
+                        <option></option>
+                        <option th:each="seller:${sellerList}" th:value="${seller.name}" th:text="${seller.name}">
+                        </option>
+                    </select>
+                </div>
+                <label>Buyer: </label>
+                <div>
+                    <select id="buyer" name="buyer">
+                        <option ></option>
+                        <option th:each="buyer:${buyerList}" th:value="${buyer.name}" th:text="${buyer.name}">
+                        </option>
+                    </select>
+                </div>
+                <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="submit" >Search</button>
+            </div>
+        </form>
+        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-blue-100 dark:text-blue-100">
+            <thead class="text-xs text-white uppercase bg-blue-600 dark:text-white">
+            <tr>
+                <th scope="col" class="py-3 px-6">Date</th>
+                <th scope="col" class="py-3 px-6">Seller</th>
+                <th scope="col" class="py-3 px-6">Buyer</th>
+                <th scope="col" class="py-3 px-6">Product</th>
+                <th scope="col" class="py-3 px-6">Quantity</th>
+                <th scope="col" class="py-3 px-6">Shipment</th>
+                <th scope="col" class="py-3 px-6">Total Price</th>
+            </tr >
+            </thead>
+            <tbody>
+            <tr class="bg-blue-500 border-b border-blue-400" th:each="history :${historyList}">
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.date}"></td>
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.seller}"></td>
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.buyer}"></td>
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.product}"></td>
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.quantity}"></td>
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.shipment}"></td>
+                <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100" th:text="${history.totalPrice}"></td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </section>
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body>
+<div class="container mx-auto w-4/5">
+    <header th:replace="~{layout::header}"></header>
+    <nav th:replace="~{layout::navigation}"></nav>
+    <div class="flex justify-between p-5 border-solid border-2 border-black">Shop</div>
+    <section>
+        <form class="w-96 p-5 border-solid border-2 border-black" th:action="@{/shop/shop-table}" method="get">
+            <div class="flex justify-between">
+                <label>Name: </label>
+                <input type="text" name="name">
+            </div>
+            <div class="flex justify-between">
+                <label>Category: </label>
+                <input type="text" name="category">
+            </div>
+            <div class="flex justify-between">
+                <label>Description: </label>
+                <input type="text" name="description">
+            </div>
+            <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    type="submit">
+                Search
+            </button>
+
+        </form>
+        <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-blue-100 dark:text-blue-100">
+                <thead class="text-xs text-white uppercase bg-blue-600 dark:text-white">
+                <tr>
+                    <th scope="col" class="py-3 px-6"></th>
+                    <th scope="col" class="py-3 px-6">Name</th>
+                    <th scope="col" class="py-3 px-6">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="bg-blue-500 border-b border-blue-400" th:each="product :${products}">
+                    <td class="py-4 px-6 font-medium text-black whitespace-nowrap dark:text-blue-100">
+                        <a>
+                            <button th:onclick="'saveIdToLocal(\'' +${product.id}+ '\')'"
+                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    type="button"
+                                    th:attr="data-modal-toggle='addCartModal'+${product.id}">
+                                Add To Cart
+                            </button>
+                            <!-- Modal toggle -->
+                            <button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                    type="button"
+                                    th:attr="data-modal-toggle='defaultModal'+*{product.id}">
+                                Info
+                            </button>
+
+                            <script th:inline="javascript">
+
+                                function saveIdToLocal(productId) {
+                                    localStorage.setItem("id", productId)
+                                }
+                            </script>
+
+                            <!-- First modal -->
+                            <div th:attr="id='addCartModal'+${product.id}" tabindex="-1" aria-hidden="true"
+                                 class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+                                <div class="relative w-full h-full max-w-2xl md:h-auto">
+                                    <!-- Modal content -->
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <!-- Modal header -->
+                                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                Add To Cart
+                                            </h3>
+                                            <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    th:attr="data-modal-toggle='addCartModal'+${product.id}">
+                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
+                                                     viewBox="0 0 20 20"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                          clip-rule="evenodd"></path>
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="p-6 space-y-6">
+                                            <form method="post" th:action="@{/shop/save-cart}" th:object="${cart}">
+                                                <div>
+                                                    <input hidden type="text" th:field="*{id}"
+                                                           placeholder="Name" autocomplete="off"/>
+                                                </div>
+
+                                                <div>
+                                                    <input hidden type="text" name="productID" th:value="${product.id}"
+                                                           placeholder="Product"
+                                                           autocomplete="off"/>
+                                                </div>
+
+                                                <div>
+                                                    <input type="number" th:field="*{quantity}"
+                                                           placeholder="Quantity"/>
+                                                    <div class="text-red-500" th:text="${minError}"></div>
+                                                </div>
+                                                <div>
+                                                    <select id="role" name="shipmentID">
+                                                        <option class="text-black" th:each="shipment:${shipmentList}"
+                                                                th:value="${shipment.id}" th:text="${shipment.name}">
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <button type="submit">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Second modal -->
+                            <div th:attr="id='defaultModal'+*{product.id}" tabindex="-1" aria-hidden="true"
+                                 class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+                                <div class="relative w-full h-full max-w-2xl md:h-auto">
+                                    <!-- Modal content -->
+                                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                        <!-- Modal header -->
+                                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                Product Details
+                                            </h3>
+                                            <button type="button"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    th:attr="data-modal-toggle='defaultModal'+*{product.id}">
+                                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
+                                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                          clip-rule="evenodd"></path>
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="p-6 space-y-6">
+                                            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                            <div class="text-gray-500 dark:text-gray-400">
+                                                Name <span th:text="*{product.name}"></span>
+                                            </div>
+                                            <div class="text-gray-500 dark:text-gray-400">
+                                                Category <span th:text="*{product.category}"></span>
+                                            </div>
+                                            <div class="text-gray-500 dark:text-gray-400">
+                                                Description <span th:text="*{product.description}"></span>
+                                            </div>
+                                            <div class="text-gray-500 dark:text-gray-400">
+                                                Price <span th:text="*{product.price}"></span>
+                                            </div>
+                                            <div class="text-gray-500 dark:text-gray-400">
+                                                Discontinue <span th:text="*{product.discontinue}"></span>
+                                            </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </td>
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                        th:text="${product.name}"></td>
+                    <td class="py-4 px-6 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                        th:text="${product.getBalanceInRp()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<script th:inline="javascript">
+    function popFunction() {
+        let productId = localStorage.getItem("id")
+        console.log(productId)
+        if (document.URL === "http://localhost:8081/shop/shop-table") {
+            document.getElementById("addCartModal" + productId).classList.remove("flex")
+            document.getElementById("addCartModal" + productId).classList.add("hidden")
+        } else if (document.URL === "http://localhost:8081/shop/shop-table-popup") {
+            document.getElementById("addCartModal" + productId).classList.remove("hidden")
+            document.getElementById("addCartModal" + productId).classList.add("flex")
+        }
+        localStorage.removeItem("id")
+    }
+    popFunction()
+</script>
+<script src="https://unpkg.com/flowbite@1.5.5/dist/flowbite.js"></script>
+</body>
+</html>
