@@ -53,6 +53,7 @@ public class ProfileController {
         return "profile/detail-profile";
     }
 
+    //test 123
     @GetMapping("/profile-detail-popup")
     public String profileDetailPopUp(Model model,Principal principal){
         String name = principal.getName();
